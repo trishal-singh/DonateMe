@@ -5,14 +5,14 @@ const donationSchema = mongoose.Schema({
     required : true
    },
    user_id:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    type : mongoose.Schema.Types.ObjectId,
+    ref : "users",
     required: true
    },
    fund_id:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "funds",
-    required: true
+    type : mongoose.Schema.Types.ObjectId,
+    ref : "funds",
+    required : true
    }
    
 })
