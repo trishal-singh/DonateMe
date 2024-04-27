@@ -34,6 +34,16 @@ const loginUser = async (req,res)=>{
     catch(e){
       console.log(e)
     }
-
 }
-module.exports={registerUser,loginUser}
+const currentUser= async (req,res)=>{
+       try{
+        
+        const user = await User.findById(req.body.id).select('-password')
+        res.json(user)
+       }
+       catch(e)
+       {
+        res.json({message:"User Not Found"})
+       }
+}
+module.exports={registerUser,loginUser,currentUser}
