@@ -46,4 +46,18 @@ const currentUser= async (req,res)=>{
         res.json({message:"User Not Found"})
        }
 }
-module.exports={registerUser,loginUser,currentUser}
+const addBalance= async (req,res)=>{
+   try{
+     let amount= await User.findById(req.body.id).select('balance')
+     
+     amount.balance+=req.body.amount
+     console.log(amount.balance)
+     const user= await User.findByIdAndUpdate(req.body.id,{balance:amount.balance})
+     res.json({message:"Balance updated"})
+   }
+   catch(e){
+    //console.log(e)
+    res.json({message:"Unable to add amount"})
+   }
+}
+module.exports={registerUser,loginUser,currentUser,addBalance}
