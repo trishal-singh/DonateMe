@@ -1,5 +1,6 @@
 const User=require("../models/user.model.js")
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
+const jwt= require('jsonwebtoken')
 
 const registerUser =  async (req,res)=>{
     try{
@@ -18,4 +19,21 @@ const registerUser =  async (req,res)=>{
     res.json({status:"Not Registered",message:"Unable to register"})
     }
 }
-module.exports={registerUser}
+const loginUser = async (req,res)=>{
+    try{
+    const {username,password}=req.body
+    const exists= await User.findOne({username})
+    if(!exists)
+    return res.json({status:"Not Logged In",message:"Wrong Username"})
+    const correctPassword = await bcrypt.compare(password,exists.password)
+    if(!correctPassword)
+    return res.json({status:"Not Logged In",message:"Wrong Password"})
+    const token = jwt.sign({userId : exists._id} , process.env.jwt_secret , {expiresIn :"1d"})
+    res.json({status:"Logged In",token:token})
+    }
+    catch(e){
+      console.log(e)
+    }
+
+}
+module.exports={registerUser,loginUser}
