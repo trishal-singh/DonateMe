@@ -14,8 +14,20 @@ const addFund = async (req,res)=>{
     }
 }
 
+const getFund = async (req,res)=>{
+    try{
+      const funds=await  Fund.find({})
+      if(!funds)
+      return res.json({"status":"Complete","message":"No Funds Found"})
+      res.json({"status":"Complete","data":funds})
+    }
+    catch(e)
+    {
+        res.json({"status":"Incomplete","message":"Unable to retrieve data"})
+    }
+}
 
 
 
 
-module.exports={addFund}
+module.exports={addFund,getFund}
