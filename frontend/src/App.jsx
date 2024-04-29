@@ -6,7 +6,7 @@ function App() {
 
   return (
     <>
-      <h1>DonateMe</h1>
+      <p className="text-5xl font-bold underline"> DonateMe </p>
     </>
   )
 }
