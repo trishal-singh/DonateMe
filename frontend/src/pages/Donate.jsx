@@ -1,7 +1,12 @@
 import React from "react";
-
+import Navbar from "../components/Navbar";
 const Donate = () => {
-  return <div>Donate</div>;
+  return (
+    <>
+      <Navbar />
+      <div>Donate</div>
+    </>
+  );
 };
 
 export default Donate;

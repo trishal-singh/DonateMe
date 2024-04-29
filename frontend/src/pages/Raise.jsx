@@ -1,7 +1,12 @@
 import React from "react";
-
+import Navbar from "../components/Navbar";
 const Raise = () => {
-  return <div>Raise</div>;
+  return (
+    <>
+      <Navbar />
+      <div>Raise</div>;
+    </>
+  );
 };
 
 export default Raise;
