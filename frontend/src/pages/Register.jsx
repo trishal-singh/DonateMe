@@ -3,7 +3,7 @@ import { useState } from "react";
 import axiosClient from "../services/axiosClient";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -52,7 +52,14 @@ const Register = () => {
         >
           REGISTER
         </button>
+        <p>
+          Already Registered?{" "}
+          <Link to="/login" className="text-lime-500 underline">
+            Login
+          </Link>{" "}
+        </p>
       </form>
+
       <ToastContainer />
     </div>
   );
