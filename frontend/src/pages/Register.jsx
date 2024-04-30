@@ -1,13 +1,28 @@
 import React from "react";
 import { useState } from "react";
+import axiosClient from "../services/axiosClient";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`Submitted ${username} ${password}`);
-    setUsername("");
-    setPassword("");
+    try {
+      const result = await axiosClient.post("/user/register", {
+        username,
+        password,
+      });
+      toast.success(result.data.message, { position: "top-center" });
+      setUsername("");
+      setPassword("");
+
+      setTimeout(() => navigate("/login"), 3000);
+    } catch (e) {
+      toast.error(e.response.data.message, { position: "top-center" });
+    }
   };
   return (
     <div className="flex justify-center items-center w-auto h-screen ">
@@ -38,6 +53,7 @@ const Register = () => {
           REGISTER
         </button>
       </form>
+      <ToastContainer />
     </div>
   );
 };
