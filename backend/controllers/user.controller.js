@@ -36,14 +36,23 @@ const loginUser = async (req, res) => {
     const { username, password } = req.body;
     const exists = await User.findOne({ username });
     if (!exists)
-      return res.json({ status: "Not Logged In", message: "Wrong Username" });
+      return res
+        .status(401)
+        .json({ status: "Not Logged In", message: "Wrong Username" });
     const correctPassword = await bcrypt.compare(password, exists.password);
     if (!correctPassword)
-      return res.json({ status: "Not Logged In", message: "Wrong Password" });
+      return res
+        .status(401)
+        .json({ status: "Not Logged In", message: "Wrong Password" });
     const token = jwt.sign({ userId: exists._id }, process.env.jwt_secret, {
       expiresIn: "1d",
     });
-    res.json({ status: "Logged In", token: token });
+    res.status(200).json({
+      status: "Logged In",
+      message: "Successfully Logged in",
+      token: token,
+      user_id: exists._id,
+    });
   } catch (e) {
     console.log(e);
   }
