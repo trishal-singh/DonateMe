@@ -1,12 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
+import axiosClient from "../services/axiosClient";
+import Cookies from "js-cookie";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router";
 const Profile = () => {
   const [name, setName] = useState("");
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState(0);
+  const navigate = useNavigate();
   const updateAmount = async () => {
-    console.log(amount);
+    try {
+      const token = Cookies.get("token");
+      const result = await axiosClient.patch(
+        "/user/addAmount",
+        { amount: amount },
+        {
+          headers: { authorization: `Bearer ${token}` },
+        }
+      );
+      toast.success(result.data.message, { position: "top-center" });
+      setBalance(result.data.balance);
+      setAmount(0);
+    } catch (e) {
+      toast.error(e.response.data.message, { position: "top-center" });
+    }
   };
+  const fetchUser = async () => {
+    const token = Cookies.get("token");
+    try {
+      const profile = await axiosClient.get("/user/", {
+        headers: { authorization: `Bearer ${token}` },
+      });
+      setName(profile.data.username);
+      setBalance(profile.data.balance);
+    } catch (e) {
+      navigate("/login");
+    }
+  };
+  useEffect(() => {
+    fetchUser();
+  }, []);
   return (
     <>
       <Navbar />
@@ -21,6 +56,7 @@ const Profile = () => {
               type="text"
               inputMode="numeric"
               placeholder="Enter a number"
+              value={amount}
               className="border-2 border-lime-500 rounded w-42 h-10 focus:border-lime-700 focus:outline-none text-lime-500"
               onChange={(e) => setAmount(e.target.value)}
             />
@@ -33,6 +69,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

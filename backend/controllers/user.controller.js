@@ -59,25 +59,29 @@ const loginUser = async (req, res) => {
 };
 const currentUser = async (req, res) => {
   try {
-    const user = await User.findById(req.body.id).select("-password");
-    res.json(user);
+    const user = await User.findById(req.body.user_id).select("-password");
+
+    res.status(200).json(user);
   } catch (e) {
-    res.json({ message: "User Not Found" });
+    res.status(404).json({ message: "User Not Found" });
   }
 };
 const addBalance = async (req, res) => {
   try {
-    let amount = await User.findById(req.body.id).select("balance");
+    let amount = await User.findById(req.body.user_id).select("balance");
 
-    amount.balance += req.body.amount;
-    console.log(amount.balance);
-    const user = await User.findByIdAndUpdate(req.body.id, {
-      balance: amount.balance,
-    });
-    res.json({ message: "Balance updated" });
+    amount.balance += Number(req.body.amount);
+    const user = await User.findByIdAndUpdate(
+      req.body.user_id,
+      {
+        balance: amount.balance,
+      },
+      { new: true }
+    );
+    res.status(200).json({ message: "Balance updated", balance: user.balance });
   } catch (e) {
     //console.log(e)
-    res.json({ message: "Unable to add amount" });
+    res.status(404).json({ message: "Unable to add amount" });
   }
 };
 module.exports = { registerUser, loginUser, currentUser, addBalance };

@@ -20,7 +20,7 @@ const Login = () => {
       toast.success(result.data.message, { position: "top-center" });
       setUsername("");
       setPassword("");
-      console.log(result.data);
+
       Cookies.set("user_id", result.data.user_id);
       Cookies.set("token", result.data.token);
       setTimeout(() => navigate("/"), 3000);
