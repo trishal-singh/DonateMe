@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import { toast, ToastContainer } from "react-toastify";
-
+import axiosClient from "../services/axiosClient";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 const Raise = () => {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
   const [target, setTarget] = useState(0);
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (target <= 0) {
       toast.error("The amount should be greater than 0", {
@@ -20,15 +23,25 @@ const Raise = () => {
       title: title,
       image: image,
       description: description,
-      current: 0,
       target: target,
-      status: "Ongoing",
     };
-    console.log(body);
-    setTitle("");
-    setImage("");
-    setDescription("");
-    setTarget(0);
+    try {
+      const token = Cookies.get("token");
+      const result = await axiosClient.post("/fund/add/", body, {
+        headers: { authorization: `Bearer ${token}` },
+      });
+      console.log(result);
+      toast.success(result.data.message, { position: "top-center" });
+      setTitle("");
+      setImage("");
+      setDescription("");
+      setTarget(0);
+    } catch (e) {
+      toast.error(e.response.data.message, { position: "top-center" });
+      if (e.response.data.message === "Token Expired") {
+        setTimeout(() => navigate("/login"), 2000);
+      }
+    }
   };
   return (
     <>
