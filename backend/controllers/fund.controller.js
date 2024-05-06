@@ -25,10 +25,14 @@ const getFund = async (req, res) => {
   try {
     const funds = await Fund.find({});
     if (!funds)
-      return res.json({ status: "Complete", message: "No Funds Found" });
-    res.json({ status: "Complete", data: funds });
+      return res
+        .status(500)
+        .json({ status: "Complete", message: "No Funds Found" });
+    res.status(200).json({ status: "Complete", data: funds });
   } catch (e) {
-    res.json({ status: "Incomplete", message: "Unable to retrieve data" });
+    res
+      .status(500)
+      .json({ status: "Incomplete", message: "Unable to retrieve data" });
   }
 };
 
