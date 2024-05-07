@@ -20,16 +20,18 @@ const Donate = () => {
     <>
       <Navbar />
       <div className="grid gap-6 grid-cols-4 ml-10">
-        {funds.map((fund) => {
-          return (
-            <DonateCard
-              title={fund.title}
-              image={fund.image}
-              raised={fund.current}
-              target={fund.target}
-            />
-          );
-        })}
+        {funds
+          .filter((fund) => fund.status === "Ongoing")
+          .map((fund) => {
+            return (
+              <DonateCard
+                title={fund.title}
+                image={fund.image}
+                raised={fund.current}
+                target={fund.target}
+              />
+            );
+          })}
       </div>
       <ToastContainer />
     </>
