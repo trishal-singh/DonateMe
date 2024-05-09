@@ -29,6 +29,7 @@ const Donate = () => {
                 image={fund.image}
                 raised={fund.current}
                 target={fund.target}
+                id={fund._id}
               />
             );
           })}

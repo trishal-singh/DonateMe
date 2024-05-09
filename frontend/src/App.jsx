@@ -8,6 +8,7 @@ import Donate from "./pages/Donate";
 import Donations from "./pages/Donations";
 import Funds from "./pages/Funds";
 import Raise from "./pages/Raise";
+import DonationPage from "./pages/DonationPage";
 function App() {
   return (
     <>
@@ -20,6 +21,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/donate/:id" element={<DonationPage />} />
       </Routes>
     </>
   );
