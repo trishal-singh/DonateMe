@@ -35,5 +35,20 @@ const getFund = async (req, res) => {
       .json({ status: "Incomplete", message: "Unable to retrieve data" });
   }
 };
+const getFundById = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const funds = await Fund.findById(id);
+    if (!funds)
+      return res
+        .status(500)
+        .json({ status: "Complete", message: "No Funds Found" });
+    res.status(200).json({ status: "Complete", data: funds });
+  } catch (e) {
+    res
+      .status(500)
+      .json({ status: "Incomplete", message: "Unable to retrieve data" });
+  }
+};
 
-module.exports = { addFund, getFund };
+module.exports = { addFund, getFund, getFundById };
