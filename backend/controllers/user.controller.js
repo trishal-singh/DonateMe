@@ -60,7 +60,17 @@ const loginUser = async (req, res) => {
 const currentUser = async (req, res) => {
   try {
     const user = await User.findById(req.body.user_id).select("-password");
-
+    if (!user) return res.status(404).json({ message: "User Not Found" });
+    res.status(200).json(user);
+  } catch (e) {
+    res.status(404).json({ message: "User Not Found" });
+  }
+};
+const getUserName = async (req, res) => {
+  try {
+    const user = await User.findById(req.body.user_id).select("username");
+    console.log(req.body);
+    if (!user) return res.status(404).json({ message: "User Not Found" });
     res.status(200).json(user);
   } catch (e) {
     res.status(404).json({ message: "User Not Found" });
@@ -84,4 +94,10 @@ const addBalance = async (req, res) => {
     res.status(404).json({ message: "Unable to add amount" });
   }
 };
-module.exports = { registerUser, loginUser, currentUser, addBalance };
+module.exports = {
+  registerUser,
+  loginUser,
+  currentUser,
+  addBalance,
+  getUserName,
+};

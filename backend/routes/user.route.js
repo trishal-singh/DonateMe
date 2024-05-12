@@ -5,5 +5,6 @@ const verifyToken = require("../middlewares/verifyToken.js");
 router.post("/register", userController.registerUser);
 router.post("/login", userController.loginUser);
 router.get("/", verifyToken, userController.currentUser);
+router.post("/owner", userController.getUserName);
 router.patch("/addAmount", verifyToken, userController.addBalance);
 module.exports = router;
