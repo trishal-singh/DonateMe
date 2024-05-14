@@ -3,22 +3,40 @@ import { useParams } from "react-router-dom";
 import axiosClient from "../services/axiosClient";
 import { ToastContainer, toast } from "react-toastify";
 import Navbar from "../components/Navbar";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 const DonationPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [fund, setFund] = useState({});
   const [amount, setAmount] = useState(0);
-  const [owner, setOwner] = useState("");
+
   const getFundById = async () => {
     try {
       const result = await axiosClient.get(`/fund/${id}`);
       setFund((prev) => result.data.data);
-      const owner = await axiosClient.post("/user/owner", {
-        user_id: fund?.owner,
-      });
-      console.log(owner);
-      //setOwner(owner);
     } catch (e) {
       toast.error(e.response.data.message, { position: "top-center" });
+    }
+  };
+  const makeDonation = async () => {
+    try {
+      const token = Cookies.get("token");
+      const result = await axiosClient.post(
+        `/donate/`,
+        { amount: amount, fund_id: fund._id },
+        {
+          headers: { authorization: `Bearer ${token}` },
+        }
+      );
+      toast.success(result.data.message, { position: "top-center" });
+      setAmount(0);
+      getFundById();
+    } catch (e) {
+      toast.error(e.response.data.message, { position: "top-center" });
+      if (e.response.data.message === "Token Expired") {
+        setTimeout(() => navigate("/login"), 2000);
+      }
     }
   };
   useEffect(() => {
@@ -44,8 +62,12 @@ const DonationPage = () => {
           value={amount}
           className="border-2 border-lime-500 rounded w-2/5 h-10 focus:border-lime-700 focus:outline-none text-lime-500"
           onChange={(e) => setAmount(e.target.value)}
+          required
         />
-        <button className="border-2 border-lime-500 rounded w-44 h-10  font-bold font-mono hover:bg-lime-500 hover:text-white">
+        <button
+          onClick={makeDonation}
+          className="border-2 border-lime-500 rounded w-44 h-10  font-bold font-mono hover:bg-lime-500 hover:text-white"
+        >
           {" "}
           DONATE
         </button>
