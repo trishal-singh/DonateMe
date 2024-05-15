@@ -64,5 +64,19 @@ const getFundById = async (req, res) => {
       .json({ status: "Incomplete", message: "Unable to retrieve data" });
   }
 };
+const deleteFundById = async (req, res) => {
+  const id = req.params.id;
 
-module.exports = { addFund, getFund, getFundById, myFund };
+  try {
+    const x = await Fund.findByIdAndDelete(id);
+    res
+      .status(200)
+      .json({ status: "Complete", message: "Fund Deleted Successfully" });
+  } catch (e) {
+    res
+      .status(500)
+      .json({ status: "Incomplete", message: "Unable to delete data" });
+  }
+};
+
+module.exports = { addFund, getFund, getFundById, myFund, deleteFundById };
