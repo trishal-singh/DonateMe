@@ -38,7 +38,7 @@ const getFund = async (req, res) => {
 const myFund = async (req, res) => {
   try {
     const funds = await Fund.find({ owner: req.body.user_id });
-    console.log(funds.length);
+
     if (!funds)
       return res
         .status(500)

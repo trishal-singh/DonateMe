@@ -4,6 +4,7 @@ import axiosClient from "../services/axiosClient";
 import { toast, ToastContainer } from "react-toastify";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import FundCard from "../components/FundCard";
 const Funds = () => {
   const [funds, setFunds] = useState([]);
   const navigate = useNavigate();
@@ -30,10 +31,19 @@ const Funds = () => {
   return (
     <>
       <Navbar />
-      <div>My Funds</div>
-      {funds.map((fund) => (
-        <div>{fund.title}</div>
-      ))}
+      <div className="grid gap-6 grid-cols-4 ml-10">
+        {funds.map((fund) => {
+          return (
+            <FundCard
+              title={fund.title}
+              image={fund.image}
+              raised={fund.current}
+              target={fund.target}
+              id={fund._id}
+            />
+          );
+        })}
+      </div>
       <ToastContainer />
     </>
   );
