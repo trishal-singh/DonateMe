@@ -58,4 +58,18 @@ const add = async (req, res) => {
     res.status(404).json({ message: "Unable to make donation" });
   }
 };
-module.exports = { add };
+const myDonations = async (req, res) => {
+  try {
+    const donations = await Donation.find({
+      user_id: req.body.user_id,
+    }).populate("fund_id");
+
+    res.status(200).json({ donations });
+  } catch (e) {
+    console.log(e);
+    res
+      .status(500)
+      .json({ status: "Incomplete", message: "Unable to retrieve data" });
+  }
+};
+module.exports = { add, myDonations };
