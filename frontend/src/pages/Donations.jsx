@@ -4,9 +4,10 @@ import axiosClient from "../services/axiosClient";
 import { toast, ToastContainer } from "react-toastify";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-
+import MyDonationCard from "../components/MyDonationCard";
 const Donations = () => {
   const [donations, setDonations] = useState([]);
+  const navigate = useNavigate();
   const getDonations = async (req, res) => {
     try {
       const token = Cookies.get("token");
@@ -29,10 +30,16 @@ const Donations = () => {
   return (
     <>
       <Navbar />
-      <div>My Donations</div>
-      {donations.map((donation) => (
-        <div>{donation.fund_id.title}</div>
-      ))}
+      <div className="grid gap-6 grid-cols-4 ml-10">
+        {donations.map((donation) => (
+          <MyDonationCard
+            amount={donation.amount}
+            title={donation.fund_id.title}
+            image={donation.fund_id.image}
+            donation_id={donation._id}
+          />
+        ))}
+      </div>
       <ToastContainer />
     </>
   );
