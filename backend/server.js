@@ -12,7 +12,9 @@ require("dotenv").config();
 app.use("/user", userRouter);
 app.use("/fund", fundRouter);
 app.use("/donate", donationRouter);
-
+app.get("/", (req, res) => {
+  res.send("Donate Me backend");
+});
 connectDB().then(() => {
   app.listen(process.env.PORT, () => {
     console.log("Server is running");
