@@ -10,6 +10,7 @@ const Navbar = () => {
     else {
       Cookies.remove("token");
       toast.success("Logged Out", { position: "top-center" });
+      setTimeout(() => navigate("/"), 1000);
     }
   };
   return (

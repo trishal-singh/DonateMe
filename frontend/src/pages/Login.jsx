@@ -23,7 +23,7 @@ const Login = () => {
 
       Cookies.set("user_id", result.data.user_id);
       Cookies.set("token", result.data.token, { expires: 1 });
-      setTimeout(() => navigate("/"), 3000);
+      setTimeout(() => navigate("/"), 1000);
     } catch (e) {
       toast.error(e.response.data.message, { position: "top-center" });
     }
