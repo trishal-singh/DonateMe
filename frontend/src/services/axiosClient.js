@@ -1,5 +1,5 @@
 import axios from "axios";
 const axiosClient = axios.create({
-  baseURL: "http://localhost:3000/",
+  baseURL: "https://donateme-backend.onrender.com/",
 });
 export default axiosClient;
